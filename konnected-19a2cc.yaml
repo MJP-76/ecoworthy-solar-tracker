@@ -1,0 +1,24 @@
+---
+substitutions:
+  name: konnected-19a2cc
+  friendly_name: Alarm Panel 19a2cc
+packages:
+  konnected.alarm-panel-esp8266: github://konnected-io/konnected-esphome/alarm-panel-esp8266.yaml@master
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+api:
+  encryption:
+    key: x1VYx365H0gpkwR2pdj8f4zEG6g3mcNmNfB6ATlSuwo=
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${deviceid}_AP
+    password: !secret ap_password
+  domain: !secret domain
+  fast_connect: true
+  min_auth_mode: WPA2

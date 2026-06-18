@@ -1,0 +1,109 @@
+---
+substitutions:
+  devicename: Projectorscreen
+  deviceid: projectorscreen
+  buttongpio: GPIO10
+  relay1gpio: GPIO12
+  relay2gpio: GPIO5
+  blueledgpio: GPIO13
+
+esphome:
+  name: ${deviceid}
+esp8266:
+  board: esp01_1m
+  board_flash_mode: dout
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${deviceid}_AP
+    password: !secret ap_password
+  domain: !secret domain
+  fast_connect: true
+  min_auth_mode: WPA2
+
+captive_portal:
+
+logger:
+
+api:
+  reboot_timeout: 15min
+  encryption:
+    key: !secret api_key
+
+ota:
+  platform: esphome
+  password: !secret ota_password
+
+web_server:
+  auth:
+    username: admin
+    password: !secret web_server_password
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: IP
+
+switch:
+  - platform: restart
+    name: Restart
+  - platform: gpio
+    pin: ${relay2gpio}
+    interlock: &interlock [open_cover, close_cover]
+    id: open_cover
+  - platform: gpio
+    pin: ${relay1gpio}
+    interlock: *interlock
+    id: close_cover
+
+cover:
+  - platform: time_based
+    name: ${devicename}
+    id: ${deviceid}
+    open_action:
+      - switch.turn_on: open_cover
+    open_duration: 60s
+    close_action:
+      - switch.turn_on: close_cover
+    close_duration: 60s
+    stop_action:
+      - switch.turn_off: open_cover
+      - switch.turn_off: close_cover
+
+sensor:
+  - platform: wifi_signal
+    name: WiFi Signal
+    update_interval: 60s
+  - platform: uptime
+    name: Uptime
+
+
+binary_sensor:
+  - platform: status
+    name: Status
+  - platform: gpio
+    pin:
+      number: ${buttongpio}
+      inverted: true
+    id: ${deviceid}_button
+    on_press:
+      then:
+        # logic for cycling through movements: open->stop->close->stop->...
+        - lambda: |
+            if (id(${deviceid}).current_operation == COVER_OPERATION_IDLE) {
+              // Cover is idle, check current state and either open or close cover.
+              if (id(${deviceid}).is_fully_closed()) {
+                id(${deviceid}).open();
+              } else {
+                id(${deviceid}).close();
+              }
+            } else {
+              // Cover is opening/closing. Stop it.
+              id(${deviceid}).stop();
+            }

@@ -1,0 +1,100 @@
+---
+substitutions:
+  devicename: Kitchen Cabinets
+  deviceid: kitchencabinets
+  relaygpio: GPIO15
+  blueledgpio: GPIO02
+  redledgpio: GPIO0
+  buttongpio: GPIO13
+
+esphome:
+  name: ${deviceid}
+  on_boot:
+    priority: 600
+    # turn off the light as early as possible
+    then:
+      - switch.turn_off: ${deviceid}_relay
+  on_shutdown:
+    then:
+      - switch.turn_off: ${deviceid}_relay
+esp8266:
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${deviceid}_AP
+    password: !secret ap_password
+  domain: !secret domain
+  fast_connect: true
+  min_auth_mode: WPA2
+
+captive_portal:
+
+logger:
+
+api:
+  reboot_timeout: 15min
+  encryption:
+    key: !secret api_key
+
+ota:
+  platform: esphome
+  password: !secret ota_password
+
+web_server:
+  auth:
+    username: admin
+    password: !secret web_server_password
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: IP Address
+
+switch:
+  - platform: restart
+    name: Restart
+  - platform: gpio
+    name: Button
+    pin: ${relaygpio}
+    id: ${deviceid}_relay
+    on_turn_on:
+      - switch.toggle: ${deviceid}_ledblue
+      - switch.toggle: ${deviceid}_ledred
+    on_turn_off:
+      - switch.toggle: ${deviceid}_ledblue
+      - switch.toggle: ${deviceid}_ledred
+  - platform: gpio
+    name: Red LED
+    pin: ${redledgpio}
+    inverted: True
+    restore_mode: ALWAYS_ON
+    id: ${deviceid}_ledred
+  - platform: gpio
+    name: Blue LED
+    pin: ${blueledgpio}
+    inverted: True
+    restore_mode: ALWAYS_OFF
+    id: ${deviceid}_ledblue
+
+binary_sensor:
+  - platform: status
+    name: Status
+  - platform: gpio
+    pin: ${buttongpio}
+    id: ${deviceid}_button
+    on_press:
+      - switch.toggle: ${deviceid}_relay
+
+sensor:
+  - platform: wifi_signal
+    name: WiFi Signal
+    update_interval: 60s
+  - platform: uptime
+    name: Uptime

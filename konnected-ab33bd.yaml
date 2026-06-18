@@ -1,0 +1,24 @@
+---
+substitutions:
+  name: konnected-ab33bd
+  friendly_name: Alarm Panel ab33bd
+packages:
+  konnected.alarm-panel-esp8266: github://konnected-io/konnected-esphome/alarm-panel-esp8266.yaml@master
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+api:
+  encryption:
+    key: 8FrJenJooPsUOe6d/l4ago4sgbp0C7GvqNjsFg1qG6Y=
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${deviceid}_AP
+    password: !secret ap_password
+  domain: !secret domain
+  fast_connect: true
+  min_auth_mode: WPA2

@@ -1,0 +1,187 @@
+---
+substitutions:
+  devicename: "MultiSensor 01"
+  deviceid: multisensor01
+
+esphome:
+  name: "${deviceid}"
+esp8266:
+  board: d1_mini
+# Enable WiFi
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${devicename}
+    password: !secret ap_password
+  domain: !secret domain
+
+captive_portal:
+
+api:
+  reboot_timeout: 15min
+  encryption:
+    key: !secret api_key
+
+ota:
+  safe_mode: true
+  password: !secret ota_password
+
+web_server:
+  auth:
+    username: admin
+    password: !secret web_server_password
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+logger:
+
+# BME680 sensor
+i2c:
+  scl: GPIO12 #D6
+  sda: GPIO13 #D7
+  scan: True
+  id: bus_a
+
+bme680_bsec:
+  address: 0x76
+  sample_rate: ulp
+
+# Ikea Vindriktning PM2.5 sensor
+uart:
+  rx_pin: D2
+  baud_rate: 9600
+
+sensor:
+  - platform: pm1006
+    pm_2_5:
+      name: "Particles PM2.5"
+      id: pm_2_5
+      accuracy_decimals: 2
+      filters:
+        - sliding_window_moving_average:
+            window_size: 50
+            send_every: 10
+      disabled_by_default: false
+      internal: false
+# BME680 sensor
+  - platform: bme680_bsec
+    temperature:
+      name: "Temperature"
+      accuracy_decimals: 2
+      filters:
+        offset: -2
+      disabled_by_default: false
+      internal: false
+    pressure:
+      name: "Pressure"
+      accuracy_decimals: 2
+      unit_of_measurement: "mmHg"
+      state_class: measurement
+      filters:
+         - multiply: 0.75006375541921
+      disabled_by_default: false
+      internal: false
+    humidity:
+      name: "Humidity"
+      accuracy_decimals: 2
+      disabled_by_default: false
+      internal: false
+    gas_resistance:
+      name: "Gas Resistance"
+      accuracy_decimals: 2
+      disabled_by_default: false
+      internal: false
+    iaq:
+      name: "IAQ"
+      id: iaq
+      accuracy_decimals: 2
+      disabled_by_default: false
+      internal: false
+    co2_equivalent:
+      name: "CO2 Equivalent"
+      accuracy_decimals: 2
+      disabled_by_default: false
+      internal: false
+    breath_voc_equivalent:
+      name: "Breath VOC Equivalent"
+      accuracy_decimals: 2
+      disabled_by_default: false
+      internal: false
+  - platform: uptime
+    name: "Uptime"
+    disabled_by_default: false
+    internal: false
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: ${devicename} IP Address
+
+  - platform: bme680_bsec
+    iaq_accuracy:
+      name: "IAQ Accuracy"
+      disabled_by_default: false
+      internal: false
+
+  - platform: template
+    name: "IAQ Classification"
+    disabled_by_default: false
+    internal: false
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      if ( int(id(iaq).state) <= 50) {
+        return {"Excellent"};
+      }
+      else if (int(id(iaq).state) >= 51 && int(id(iaq).state) <= 100) {
+        return {"Good"};
+      }
+      else if (int(id(iaq).state) >= 101 && int(id(iaq).state) <= 150) {
+        return {"Lightly polluted"};
+      }
+      else if (int(id(iaq).state) >= 151 && int(id(iaq).state) <= 200) {
+        return {"Moderately polluted"};
+      }
+      else if (int(id(iaq).state) >= 201 && int(id(iaq).state) <= 250) {
+        return {"Heavily polluted"};
+      }
+      else if (int(id(iaq).state) >= 251 && int(id(iaq).state) <= 350) {
+        return {"Severely polluted"};
+      }
+      else if (int(id(iaq).state) >= 351) {
+        return {"Extremely polluted"};
+      }
+      else {
+        return {"error"};
+      }
+# Ikea Vindriktning PM2.5 sensor
+  - platform: template
+    name: "PM2.5 Classification"
+    disabled_by_default: false
+    internal: false
+    icon: "mdi:blur"
+    lambda: |-
+      if ( int(id(pm_2_5).state) <= 25) {
+        return {"Excellent"};
+      }
+      else if (int(id(pm_2_5).state) >= 26 && int(id(pm_2_5).state) <= 50) {
+        return {"Good"};
+      }
+      else if (int(id(pm_2_5).state) >= 51 && int(id(pm_2_5).state) <= 100) {
+        return {"Polluted"};
+      }
+      else if (int(id(pm_2_5).state) >= 101 && int(id(pm_2_5).state) <= 300) {
+        return {"Heavily polluted"};
+      }
+      else if (int(id(pm_2_5).state) >= 301) {
+        return {"Extremely polluted"};
+      }
+      else {
+        return {"error"};
+      }
+button:
+  - platform: restart
+    id: restart_button
+    name: ${devicename} Restart
