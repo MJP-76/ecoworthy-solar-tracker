@@ -13,6 +13,7 @@ esphome:
     priority: 600 # turn off the light as early as possible
     then:
 #      - light.turn_on: ${deviceid}_light #Use when no physical switch connected
+      - switch.turn_on: ${deviceid}_switch #Use when no physical switch connected
       - light.turn_off: ${deviceid}_light #Use physical switch connected
   on_shutdown:
     then:
