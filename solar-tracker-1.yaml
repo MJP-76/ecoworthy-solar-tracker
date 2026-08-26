@@ -18,8 +18,8 @@
 #   ota_password: "your_ota_password"
 
 substitutions:
-  device_name: solar-tracker
-  friendly_name: solar-tracker
+  device_name: solar-tracker-1
+  friendly_name: solar-tracker-1
 
 esphome:
   name: ${device_name}
