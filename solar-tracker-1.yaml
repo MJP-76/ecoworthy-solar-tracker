@@ -6,8 +6,10 @@
 # Wiring:
 #   D1 Mini Pro 5V  -> Tracker 5V (LM2596 rail)
 #   D1 Mini Pro GND -> Tracker GND (Pin 14)
-#   D1 Mini Pro D1  -> Tracker Pin 17 (IR receiver signal leg)
-#   GND common between both boards
+#   D1 Mini Pro D4 (GPIO1/TX) -+-> Tracker Pin 17 (IR receiver signal leg)
+#   D1 Mini Pro D7 (GPIO3/RX) -+
+#   (TX and RX tied together with a short wire on the D1 Mini side)
+#   GND common between all boards
 #
 # secrets.yaml must contain:
 #   wifi_ssid: "YourSSID"
