@@ -66,10 +66,10 @@ uart:
   id: uart_bus
   rx_buffer_size: 512
   baud_rate: 9600
-  tx_pin: GPIO1 # D4 (TX)
-  rx_pin: GPIO3 # D7 (RX)
-  # TX and RX are tied together on the tracker board side (single wire)
-  # Both connect to Pin 17 (IR receiver pad) on the STC15
+  tx_pin: GPIO17 # UART2 TX
+  rx_pin: GPIO16 # UART2 RX
+  # ESP32 UART2 - dedicated hardware UART for the STC bridge
+  # No pull-up resistor needed, no TX/RX tying required
 
 tracker_bridge:
   id: bridge
