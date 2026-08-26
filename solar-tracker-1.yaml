@@ -76,7 +76,7 @@ tracker_bridge:
   uart_id: uart_bus
   mesh:
     channel: 6 # must match your WiFi AP channel
-    psk: !secret tracker_mesh_psk
+    psk: !secret mesh_psk
     has_wind_sensor: true
     peers: []
 
