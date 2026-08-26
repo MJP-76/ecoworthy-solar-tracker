@@ -62,9 +62,6 @@ external_components:
     components: [tracker_bridge]
     refresh: 0s
 
-libraries:
-  - rweather/Crypto@^0.4.0
-
 uart:
   id: uart_bus
   rx_buffer_size: 512
