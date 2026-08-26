@@ -1,21 +1,21 @@
 # ECO-WORTHY Dual-Axis Solar Tracker - ESPHome Bridge
-# For Wemos D1 Mini Pro connected to STC15 pin 17 (IR receiver pad)
+# For ESP32 (ESP-WROOM-32) connected to STC15 pin 17 (IR receiver pad)
 # Requires custom STC15 firmware from:
 #   https://github.com/jtubb/ecoworthy-solar-tracker
 #
 # Wiring:
-#   D1 Mini Pro 5V  -> Tracker 5V (LM2596 rail)
-#   D1 Mini Pro GND -> Tracker GND (Pin 14)
-#   D1 Mini Pro D4 (GPIO1/TX) -+-> Tracker Pin 17 (IR receiver signal leg)
-#   D1 Mini Pro D7 (GPIO3/RX) -+
-#   (TX and RX tied together with a short wire on the D1 Mini side)
+#   ESP32 5V (or 3.3V) -> Tracker Pad 3 (+)
+#   ESP32 GND           -> Tracker Pad 4 (-)
+#   ESP32 GPIO16 (RX2)  -> Tracker Pin 17 (IR receiver signal leg)
+#   No pull-up resistor needed - ESP32 UART handles it
 #   GND common between all boards
 #
 # secrets.yaml must contain:
 #   wifi_ssid: "YourSSID"
 #   wifi_password: "YourPassword"
-#   ha_api_key: "base64..."
+#   api_key: "base64..."
 #   ota_password: "your_ota_password"
+#   mesh_psk: "at_least_16_chars"
 
 substitutions:
   device_name: solar-tracker-1
