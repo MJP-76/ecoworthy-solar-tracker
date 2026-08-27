@@ -125,7 +125,7 @@ button:
     icon: mdi:arrow-up-bold
     on_press:
       - lambda: |-
-          id(bridge).write_str_frame_("!jog ax=0 dir=+ ms=2000");
+          id(bridge).send_command("!jog ax=0 dir=+ ms=2000");
   - platform: template
     name: "$friendly_name Jog South"
     icon: mdi:arrow-down-bold
