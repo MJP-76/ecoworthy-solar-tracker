@@ -143,7 +143,7 @@ button:
     icon: mdi:arrow-left-bold
     on_press:
       - lambda: |-
-          id(bridge).write_str_frame_("!jog ax=1 dir=- ms=2000");
+          id(bridge).send_command("!jog ax=1 dir=- ms=2000");
 
 # --- Config sliders ---------------------------------------------------
 number:
