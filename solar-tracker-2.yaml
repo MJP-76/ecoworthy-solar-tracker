@@ -115,6 +115,7 @@ button:
     force_park: { name: "$friendly_name Force Park" }
     force_release: { name: "$friendly_name Force Release" }
     stop: { name: "$friendly_name Emergency Stop" }
+    calibrate: { name: "$friendly_name Calibrate" }
 
 # --- Config sliders ---------------------------------------------------
 number:
