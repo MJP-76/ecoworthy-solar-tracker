@@ -195,6 +195,41 @@ number:
       max_value: 200
       step: 1
 
+# --- Go To Position control -------------------------------------------
+number:
+  - platform: template
+    name: "$friendly_name Go To Azimuth"
+    id: goto_az
+    icon: mdi:compass
+    min_value: 0
+    max_value: 100
+    step: 1
+    optimistic: true
+    entity_category: config
+    set_action:
+      - lambda: |-
+          int az = (int)x;
+          int el = id(goto_el).state;
+          char buf[32];
+          snprintf(buf, sizeof(buf), "!goto az=%d el=%d", az, el);
+          id(bridge).send_command(buf);
+  - platform: template
+    name: "$friendly_name Go To Elevation"
+    id: goto_el
+    icon: mdi:elevation-rise
+    min_value: 0
+    max_value: 100
+    step: 1
+    optimistic: true
+    entity_category: config
+    set_action:
+      - lambda: |-
+          int az = id(goto_az).state;
+          int el = (int)x;
+          char buf[32];
+          snprintf(buf, sizeof(buf), "!goto az=%d el=%d", az, el);
+          id(bridge).send_command(buf);
+
 # --- Diagnostic switches -----------------------------------------------
 switch:
   - platform: template
