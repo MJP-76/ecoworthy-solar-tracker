@@ -65,7 +65,7 @@ web_server:
 external_components:
   - source:
       type: local
-      path: /homeassistant/esphome/components
+      path: /config/esphome/components
     components: [tracker_bridge]
 
 uart:
