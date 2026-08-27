@@ -205,3 +205,35 @@ switch:
       - switch.turn_off: resume_tracking_switch
     turn_off_action:
       - lambda: ;
+
+# --- Debug: runtime baud-rate select (leave at 9600 unless debugging) --
+select:
+  - id: change_baud_rate
+    name: "Baud rate"
+    platform: template
+    options:
+      - "1200"
+      - "2400"
+      - "4800"
+      - "9600"
+      - "38400"
+      - "57600"
+      - "115200"
+      - "256000"
+      - "512000"
+      - "921600"
+    initial_option: "9600"
+    optimistic: true
+    restore_value: True
+    internal: false
+    entity_category: config
+    icon: mdi:swap-horizontal
+    set_action:
+      - lambda: |-
+          id(uart_bus).flush();
+          uint32_t new_baud_rate = stoi(x);
+          ESP_LOGD("change_baud_rate", "Baud %u -> %u", id(uart_bus).get_baud_rate(), new_baud_rate);
+          if (id(uart_bus).get_baud_rate() != new_baud_rate) {
+            id(uart_bus).set_baud_rate(new_baud_rate);
+            id(uart_bus).load_settings();
+          }
