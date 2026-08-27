@@ -137,7 +137,7 @@ button:
     icon: mdi:arrow-right-bold
     on_press:
       - lambda: |-
-          id(bridge).write_str_frame_("!jog ax=1 dir=+ ms=2000");
+          id(bridge).send_command("!jog ax=1 dir=+ ms=2000");
   - platform: template
     name: "$friendly_name Jog West"
     icon: mdi:arrow-left-bold
