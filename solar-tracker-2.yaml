@@ -167,6 +167,9 @@ number:
       min_value: 5
       max_value: 200
       step: 1
+    # Bench helper: inject synthetic wind values for testing without a real sensor
+    wind_override:
+      name: "$friendly_name Wind override"
 
 # --- Diagnostic switches -----------------------------------------------
 switch:
