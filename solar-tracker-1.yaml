@@ -81,7 +81,8 @@ tracker_bridge:
     channel: 1 # must match your WiFi AP channel
     psk: !secret mesh_psk
     has_wind_sensor: true
-    peers: []
+    peers:
+      - solar-tracker-2
 
 # --- Sensors / status -------------------------------------------------
 sensor:
