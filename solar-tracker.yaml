@@ -31,8 +31,8 @@ esp32:
     type: arduino
 
 logger:
-  # Temporarily enable serial logging for debugging
-  baud_rate: 115200
+  # HW UART dedicated to the STC bridge - disable serial logging
+  baud_rate: 0
 
 api:
   encryption:
