@@ -80,7 +80,7 @@ tracker_bridge:
   mesh:
     channel: 1 # must match your WiFi AP channel
     psk: !secret mesh_psk
-    has_wind_sensor: true
+    has_wind_sensor: false # No physical wind sensor on tracker-2; wind arrives via mesh from tracker-1
     peers:
       - solar-tracker-1
 
