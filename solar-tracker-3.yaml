@@ -120,6 +120,30 @@ button:
     force_release: { name: "$friendly_name Force Release" }
     stop: { name: "$friendly_name Emergency Stop" }
     calibrate: { name: "$friendly_name Calibrate" }
+  - platform: template
+    name: "$friendly_name Jog North"
+    icon: mdi:arrow-up-bold
+    on_press:
+      - lambda: |-
+          id(bridge).write_str_frame_("!jog ax=0 dir=+ ms=2000");
+  - platform: template
+    name: "$friendly_name Jog South"
+    icon: mdi:arrow-down-bold
+    on_press:
+      - lambda: |-
+          id(bridge).write_str_frame_("!jog ax=0 dir=- ms=2000");
+  - platform: template
+    name: "$friendly_name Jog East"
+    icon: mdi:arrow-right-bold
+    on_press:
+      - lambda: |-
+          id(bridge).write_str_frame_("!jog ax=1 dir=+ ms=2000");
+  - platform: template
+    name: "$friendly_name Jog West"
+    icon: mdi:arrow-left-bold
+    on_press:
+      - lambda: |-
+          id(bridge).write_str_frame_("!jog ax=1 dir=- ms=2000");
 
 # --- Config sliders ---------------------------------------------------
 number:
