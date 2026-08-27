@@ -206,6 +206,11 @@ number:
       min_value: 5
       max_value: 200
       step: 1
+    wind_override:
+      name: "$friendly_name Wind Override"
+      min_value: 0
+      max_value: 99
+      step: 1
   - platform: template
     name: "$friendly_name Go To Azimuth"
     id: goto_az
