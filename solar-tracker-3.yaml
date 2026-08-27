@@ -78,7 +78,6 @@ uart:
 tracker_bridge:
   id: bridge
   uart_id: uart_bus
-  update_interval: 5s
   mesh:
     channel: 6
     psk: !secret mesh_psk
