@@ -60,9 +60,10 @@ web_server:
   include_internal: true
 
 external_components:
-  - source: github://jtubb/ecoworthy-solar-tracker
+  - source:
+      type: local
+      path: /homeassistant/esphome/components
     components: [tracker_bridge]
-    refresh: 0s
 
 uart:
   id: uart_bus
