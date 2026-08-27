@@ -144,6 +144,12 @@ button:
     on_press:
       - lambda: |-
           id(bridge).send_command("!jog ax=1 dir=- ms=2000");
+  - platform: template
+    name: "$friendly_name Go To Home"
+    icon: mdi:home
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!goto az=50 el=50");
 
 # --- Config sliders ---------------------------------------------------
 number:
