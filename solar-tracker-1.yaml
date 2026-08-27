@@ -19,7 +19,7 @@
 
 substitutions:
   device_name: solar-tracker-1
-  friendly_name: "Solar Tracker"
+  friendly_name: Solar Tracker 1
 
 esphome:
   name: ${device_name}
