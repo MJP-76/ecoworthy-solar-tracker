@@ -121,6 +121,12 @@ button:
     stop: { name: "$friendly_name Emergency Stop" }
     calibrate: { name: "$friendly_name Calibrate" }
   - platform: template
+    name: "$friendly_name Resume Tracking"
+    icon: mdi:play
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!track");
+  - platform: template
     name: "$friendly_name Jog North"
     icon: mdi:arrow-up-bold
     on_press:
