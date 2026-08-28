@@ -134,25 +134,41 @@ button:
     icon: mdi:arrow-up-bold
     on_press:
       - lambda: |-
-          id(bridge).send_command("!jog ax=0 dir=+ ms=2000");
+          static int el = 50;
+          el = std::min(100, el + 5);
+          char buf[32];
+          snprintf(buf, sizeof(buf), "!goto az=50 el=%d", el);
+          id(bridge).send_command(buf);
   - platform: template
     name: "Jog South"
     icon: mdi:arrow-down-bold
     on_press:
       - lambda: |-
-          id(bridge).send_command("!jog ax=0 dir=- ms=2000");
+          static int el = 50;
+          el = std::max(0, el - 5);
+          char buf[32];
+          snprintf(buf, sizeof(buf), "!goto az=50 el=%d", el);
+          id(bridge).send_command(buf);
   - platform: template
     name: "Jog East"
     icon: mdi:arrow-right-bold
     on_press:
       - lambda: |-
-          id(bridge).send_command("!goto az=70 el=50");
+          static int az = 50;
+          az = std::min(100, az + 5);
+          char buf[32];
+          snprintf(buf, sizeof(buf), "!goto az=%d el=50", az);
+          id(bridge).send_command(buf);
   - platform: template
     name: "Jog West"
     icon: mdi:arrow-left-bold
     on_press:
       - lambda: |-
-          id(bridge).send_command("!goto az=30 el=50");
+          static int az = 50;
+          az = std::max(0, az - 5);
+          char buf[32];
+          snprintf(buf, sizeof(buf), "!goto az=%d el=50", az);
+          id(bridge).send_command(buf);
   - platform: template
     name: "Go To Home"
     icon: mdi:home
