@@ -160,25 +160,25 @@ button:
       - lambda: |-
           id(bridge).send_command("!goto az=50 el=50");
   - platform: template
-    name: "$friendly_name Go To East"
+    name: "Go To East"
     icon: mdi:arrow-right-bold
     on_press:
       - lambda: |-
           id(bridge).send_command("!goto az=80 el=50");
   - platform: template
-    name: "$friendly_name Go To West"
+    name: "Go To West"
     icon: mdi:arrow-left-bold
     on_press:
       - lambda: |-
           id(bridge).send_command("!goto az=20 el=50");
   - platform: template
-    name: "$friendly_name Go To North"
+    name: "Go To North"
     icon: mdi:arrow-up-bold
     on_press:
       - lambda: |-
           id(bridge).send_command("!goto az=50 el=80");
   - platform: template
-    name: "$friendly_name Go To South"
+    name: "Go To South"
     icon: mdi:arrow-down-bold
     on_press:
       - lambda: |-
