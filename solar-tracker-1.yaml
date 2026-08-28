@@ -102,11 +102,20 @@ sensor:
       name: "$friendly_name Wind"
 
 text_sensor:
+  - platform: template
+    name: "ESPHome Version"
+    icon: mdi:new-box
+    lambda: |-
+      auto s = App.get_firmware_version();
+      if (s.empty()) return std::string("unknown");
+      // Strip build date, keep just version number
+      auto pos = s.find(' ');
+      if (pos != std::string::npos) return s.substr(0, pos);
+      return s;
+    update_interval: 60s
   - platform: wifi_info
     ip_address:
       name: "$friendly_name IP Address"
-  - platform: version
-    name: "$friendly_name ESPHome Version"
   - platform: tracker_bridge
     tracker_bridge_id: bridge
     mode:
@@ -114,15 +123,21 @@ text_sensor:
 
 # --- Command buttons --------------------------------------------------
 button:
+  - platform: restart
+    name: "Restart"
+    icon: mdi:restart
   - platform: tracker_bridge
     tracker_bridge_id: bridge
     force_park: { name: "Force Park" }
     force_release: { name: "Force Release" }
     stop: { name: "Emergency Stop" }
     calibrate: { name: "Calibrate" }
-  - platform: restart
-    name: "Restart"
-    icon: mdi:restart
+  - platform: template
+    name: "Go To Home"
+    icon: mdi:home
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!goto az=50 el=50");
   - platform: template
     name: "Resume Tracking"
     icon: mdi:play
@@ -170,12 +185,6 @@ button:
           snprintf(buf, sizeof(buf), "!goto az=%d el=50", az);
           id(bridge).send_command(buf);
   - platform: template
-    name: "Go To Home"
-    icon: mdi:home
-    on_press:
-      - lambda: |-
-          id(bridge).send_command("!goto az=50 el=50");
-  - platform: template
     name: "Go To East"
     icon: mdi:arrow-right-bold
     on_press:
@@ -199,12 +208,6 @@ button:
     on_press:
       - lambda: |-
           id(bridge).send_command("!goto az=50 el=20");
-  - platform: template
-    name: "Test Command"
-    icon: mdi:test-tube
-    on_press:
-      - lambda: |-
-          id(bridge).send_command("!status");
 
 # --- Config sliders ---------------------------------------------------
 number:
@@ -324,35 +327,3 @@ switch:
       - switch.turn_off: resume_tracking_switch
     turn_off_action:
       - lambda: ;
-
-# --- Debug: runtime baud-rate select (leave at 9600 unless debugging) --
-select:
-  - id: change_baud_rate
-    name: "Baud rate"
-    platform: template
-    options:
-      - "1200"
-      - "2400"
-      - "4800"
-      - "9600"
-      - "38400"
-      - "57600"
-      - "115200"
-      - "256000"
-      - "512000"
-      - "921600"
-    initial_option: "9600"
-    optimistic: true
-    restore_value: True
-    internal: false
-    entity_category: config
-    icon: mdi:swap-horizontal
-    set_action:
-      - lambda: |-
-          id(uart_bus).flush();
-          uint32_t new_baud_rate = stoi(x);
-          ESP_LOGD("change_baud_rate", "Baud %u -> %u", id(uart_bus).get_baud_rate(), new_baud_rate);
-          if (id(uart_bus).get_baud_rate() != new_baud_rate) {
-            id(uart_bus).set_baud_rate(new_baud_rate);
-            id(uart_bus).load_settings();
-          }
