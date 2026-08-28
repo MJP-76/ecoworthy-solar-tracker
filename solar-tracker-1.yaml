@@ -120,6 +120,9 @@ button:
     force_release: { name: "$friendly_name Force Release" }
     stop: { name: "$friendly_name Emergency Stop" }
     calibrate: { name: "$friendly_name Calibrate" }
+  - platform: restart
+    name: "$friendly_name Restart"
+    icon: mdi:restart
   - platform: template
     name: "$friendly_name Resume Tracking"
     icon: mdi:play
