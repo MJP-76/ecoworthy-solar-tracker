@@ -116,45 +116,45 @@ text_sensor:
 button:
   - platform: tracker_bridge
     tracker_bridge_id: bridge
-    force_park: { name: "$friendly_name Force Park" }
-    force_release: { name: "$friendly_name Force Release" }
-    stop: { name: "$friendly_name Emergency Stop" }
-    calibrate: { name: "$friendly_name Calibrate" }
+    force_park: { name: "Force Park" }
+    force_release: { name: "Force Release" }
+    stop: { name: "Emergency Stop" }
+    calibrate: { name: "Calibrate" }
   - platform: restart
-    name: "$friendly_name Restart"
+    name: "Restart"
     icon: mdi:restart
   - platform: template
-    name: "$friendly_name Resume Tracking"
+    name: "Resume Tracking"
     icon: mdi:play
     on_press:
       - lambda: |-
           id(bridge).send_command("!track");
   - platform: template
-    name: "$friendly_name Jog North"
+    name: "Jog North"
     icon: mdi:arrow-up-bold
     on_press:
       - lambda: |-
           id(bridge).send_command("!jog ax=0 dir=+ ms=2000");
   - platform: template
-    name: "$friendly_name Jog South"
+    name: "Jog South"
     icon: mdi:arrow-down-bold
     on_press:
       - lambda: |-
           id(bridge).send_command("!jog ax=0 dir=- ms=2000");
   - platform: template
-    name: "$friendly_name Jog East"
+    name: "Jog East"
     icon: mdi:arrow-right-bold
     on_press:
       - lambda: |-
           id(bridge).send_command("!goto az=70 el=50");
   - platform: template
-    name: "$friendly_name Jog West"
+    name: "Jog West"
     icon: mdi:arrow-left-bold
     on_press:
       - lambda: |-
           id(bridge).send_command("!goto az=30 el=50");
   - platform: template
-    name: "$friendly_name Go To Home"
+    name: "Go To Home"
     icon: mdi:home
     on_press:
       - lambda: |-
