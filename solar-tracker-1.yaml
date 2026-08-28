@@ -146,19 +146,49 @@ button:
     icon: mdi:arrow-right-bold
     on_press:
       - lambda: |-
-          id(bridge).send_command("!jog ax=1 dir=+ ms=2000");
+          id(bridge).send_command("!goto az=70 el=50");
   - platform: template
     name: "$friendly_name Jog West"
     icon: mdi:arrow-left-bold
     on_press:
       - lambda: |-
-          id(bridge).send_command("!jog ax=1 dir=- ms=2000");
+          id(bridge).send_command("!goto az=30 el=50");
   - platform: template
     name: "$friendly_name Go To Home"
     icon: mdi:home
     on_press:
       - lambda: |-
           id(bridge).send_command("!goto az=50 el=50");
+  - platform: template
+    name: "$friendly_name Go To East"
+    icon: mdi:arrow-right-bold
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!goto az=80 el=50");
+  - platform: template
+    name: "$friendly_name Go To West"
+    icon: mdi:arrow-left-bold
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!goto az=20 el=50");
+  - platform: template
+    name: "$friendly_name Go To North"
+    icon: mdi:arrow-up-bold
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!goto az=50 el=80");
+  - platform: template
+    name: "$friendly_name Go To South"
+    icon: mdi:arrow-down-bold
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!goto az=50 el=20");
+  - platform: template
+    name: "$friendly_name Test Command"
+    icon: mdi:test-tube
+    on_press:
+      - lambda: |-
+          id(bridge).send_command("!status");
 
 # --- Config sliders ---------------------------------------------------
 number:
