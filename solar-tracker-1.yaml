@@ -89,16 +89,9 @@ tracker_bridge:
 
 # --- Information -------------------------------------------------------
 text_sensor:
-  - platform: template
+  - platform: version
     name: "ESPHome Version"
     icon: mdi:new-box
-    lambda: |-
-      auto s = App.get_firmware_version();
-      if (s.empty()) return std::string("unknown");
-      auto pos = s.find(' ');
-      if (pos != std::string::npos) return s.substr(0, pos);
-      return s;
-    update_interval: 60s
   - platform: wifi_info
     ip_address:
       name: "IP Address"
