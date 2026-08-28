@@ -184,7 +184,7 @@ button:
       - lambda: |-
           id(bridge).send_command("!goto az=50 el=20");
   - platform: template
-    name: "$friendly_name Test Command"
+    name: "Test Command"
     icon: mdi:test-tube
     on_press:
       - lambda: |-
